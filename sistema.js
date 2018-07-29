@@ -75,24 +75,24 @@ function SistemaCadastro() {
 	
     function buscarParticipantesAprovados(){
 	    //implemente o código necessário
-	    var aprov = [];
+	    var aprovados = [];
 	    for(var i = 0; i < participantes.length; i++){
 		    if(participantes[i].aprovado){
-			    aprov[i] = participantes[i].aprovado;
+			    aprovados[i] = participantes[i].aprovado;
 		    }
 	    }
-	    return aprov;			
+	    return aprovados;			
     }
 	
     function buscarParticipantesReprovados(){
 	    //implemente o código necessário
-	    var reprov = [];
+	    var reprovados = [];
 	    for(var i = 0; i < participantes.length; i++){
 		    if(participantes[i].aprovado === false){
-			    reprov[i] = participantes[i].aprovado;
+			    reprovados[i] = participantes[i].aprovado;
 		    }
 	    }
-	    return reprov;
+	    return reprovados;
     }
 	
     function obterParticipante(email){
