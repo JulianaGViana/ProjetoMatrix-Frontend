@@ -77,7 +77,7 @@ function SistemaCadastro() {
 	    //implemente o código necessário
 	    var aprov = [];
 	    for(var i = 0; i < participantes.length; i++){
-		    if(participantes[i].aprovado === true){
+		    if(participantes[i].aprovado){
 			    aprov[i] = participantes[i].aprovado;
 		    }
 	    }
