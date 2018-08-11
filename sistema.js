@@ -13,11 +13,13 @@ function Participante() {
  * Representa o sistema
  * Uma vez instanciado, deve-se usar essa mesma
  * instancia em todas as operações.
- */
+*/
+
+
 function SistemaCadastro() {
 
     //Onde os participantes ficarão armazenados
-    var participantes = [];
+    const armazenamento = new Armazenamento("participantes");
 
     function adicionarParticipante(nome, sobrenome, email, idade, sexo) {
 	    //implemente o código necessário
@@ -30,76 +32,74 @@ function SistemaCadastro() {
 		    p.idade = idade;
 		    p.sexo = sexo;
 
-		    participantes.push(p);
+		    armazenamento.adicionar(p);
 	    }
 	    else
 	    {
-		    throw new Error("O email já existe no sistema.");
+		    throw new Error('O email já existe no sistema.');
 	    }										
     }
 
     function removerParticipante(email) {
 	    //implemente o código necessário
-	    function encontrarIndice(elemento){
-		    return elemento.email === email;
-	    }
-	    var index = 0;
-	    index = participantes.findIndex(encontrarIndice);
-	    participantes.splice(index, 1);
+	    	armazenamento.remover("email", email);
+    }
+
+    function editarParticipante(nome, sobrenome, email, idade, sexo, nota){
+    	var participante = obterParticipante(email);
+        participante.nome = nome;
+        participante.sobrenome = sobrenome;
+        participante.idade = idade;
+        participante.sexo = sexo;
+        alterarNotaDoParticipante(participante, nota);
+        armazenamento.editar("email", participante);
     }
 	
     function buscarParticipantesPorNome(nome){
 	    //implemente o código necessário
-		function buscar(elemento){
-			return elemento.nome === nome;
-		}
-	    return participantes.filter(buscar);
+	    return armazenamento.obterElementos("nome", nome);
     }
 	
     function buscarParticipantesPorSexo(sexo){
 	    //implemente o código necessário
-		function buscar(elemento){
-			return elemento.sexo === sexo;
-		}
-	    return participantes.filter(buscar);
+	    return armazenamento.obterElementos("sexo", sexo);
     }
 	
     function buscarParticipantesAprovados(){
 	    //implemente o código necessário
-		function buscar(elemento){
-			return elemento.aprovado;
-		}
-	    return participantes.filter(buscar);
+	    return armazenamento.obterElementos("aprovado", true);
     }
 	
     function buscarParticipantesReprovados(){
 	    //implemente o código necessário
-		function buscar(elemento){
-			return !elemento.aprovado;
-		}
-	    return participantes.filter(buscar);
+	    return armazenamento.obterElementos("aprovado", false);
     }
 	
     function obterParticipante(email){
 	    //implemente o código necessário
-		function encontrarParticipante(elemento){
-			return elemento.email === email;
-		}
-	    return participantes.find(encontrarParticipante);
+	    return armazenamento.obterElemento("email", email);
+    }
+
+    function obterParticipantes(){
+    	return armazenamento.deserializar();
     }
 	
+    function alterarNotaDoParticipante(participante, nota){
+        participante.nota = nota;
+        participante.aprovado = participante.nota >= 70;
+    }
+    
+
     function adicionarNotaAoParticipante(email, nota){
 	    //implemente o código necessário
-		function buscarParticipante(elemento){
-			return elemento.email === email;
-		}
-	    var index = participantes.findIndex(buscarParticipante);
-	    participantes[index].nota = nota;
-	    return participantes[index].nota >= 70 ? participantes[index].aprovado = true : participantes[index].aprovado = false;
+	    var participante = obterParticipante(email);
+	    alterarNotaDoParticipante(participante, nota);
+	    armazenamento.editar("email", participante);
     }
-	
+
     function obterMediaDasNotasDosParticipantes(){
 	    //implemente o código necessário
+	    var participantes = armazenamento.deserializar();
 		function somar(soma, elemento){
 			return soma + elemento.nota;
 		}
@@ -108,41 +108,36 @@ function SistemaCadastro() {
     }
 	
     function obterTotalDeParticipantes(){
-	    return participantes.length;
+	    return armazenamento.deserializar().length;
     }
 	
     function verificarSeParticipanteEstaAprovado(email){
 	    //implemente o código necessário
-		function verificar(elemento){
-			return elemento.email === email ? elemento.aprovado : false;
-		}
-	    return participantes.find(verificar);
+	    var participante = obterParticipante(email);
+	    if(participante)
+	    	return participante.aprovado;
     }
 	
     function obterQuantidadeDeParticipantesPorSexo(sexo){
 	    //implemente o código necessário
-		var quantidade = 0;
-		function processarQuantidade(elemento){
-			if(elemento.sexo === sexo){
-				quantidade++;
-			}
-		}
-	    participantes.forEach(processarQuantidade);
-	    return quantidade;
+	    return buscarParticipantesPorSexo(sexo).length;
     }
 
     return {
         adicionarParticipante,
         removerParticipante,
+        editarParticipante,
         buscarParticipantesPorNome,
         buscarParticipantesPorSexo,
         buscarParticipantesAprovados,
         buscarParticipantesReprovados,
         obterParticipante,
+        obterParticipantes,
+        alterarNotaDoParticipante,
         adicionarNotaAoParticipante,
         obterMediaDasNotasDosParticipantes,
         obterTotalDeParticipantes,
         verificarSeParticipanteEstaAprovado,
-        obterQuantidadeDeParticipantesPorSexo    
+        obterQuantidadeDeParticipantesPorSexo     
     };
 }
