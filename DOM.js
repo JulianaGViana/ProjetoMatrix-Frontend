@@ -21,7 +21,6 @@ function alterarParticipante(email){
 
 function excluirParticipante(email){
 	sistema.removerParticipante(email);
-	modificarTabela();
 	window.location.reload(true);
 }
 
@@ -58,7 +57,6 @@ salvar.addEventListener('click', function(e){
 			valorRadio,
 			document.getElementById("notaParticipante").value
 			);
-			modificarTabela();
 			window.location.reload(true);
 	}
 	else
@@ -77,7 +75,6 @@ salvar.addEventListener('click', function(e){
 				document.getElementById("emailParticipante").value,
 				document.getElementById("notaParticipante").value
 				);
-			modificarTabela();
 			window.location.reload(true);
 		}catch(Error){
 			window.alert(Error.message);
