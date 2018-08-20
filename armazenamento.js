@@ -24,6 +24,10 @@ function Armazenamento(key){
             return objeto[atributo] === elemento;
         });
     }
+
+    function obterTodosOsElementos(){
+        return deserializar();
+    }
     
     function adicionar(objeto){
         var elementos = deserializar();
@@ -54,6 +58,7 @@ function Armazenamento(key){
         deserializar,
         obterElemento,
         obterElementos,
+        obterTodosOsElementos,
         adicionar,
         remover,
         editar
