@@ -99,7 +99,7 @@ function SistemaCadastro() {
 
     function obterMediaDasNotasDosParticipantes(){
 	    //implemente o código necessário
-	    var participantes = armazenamento.deserializar();
+	    var participantes = armazenamento.obterTodosOsElementos();
 		function somar(soma, elemento){
 			return soma + elemento.nota;
 		}
@@ -108,7 +108,7 @@ function SistemaCadastro() {
     }
 	
     function obterTotalDeParticipantes(){
-	    return armazenamento.deserializar().length;
+	    return armazenamento.obterTodosOsElementos().length;
     }
 	
     function verificarSeParticipanteEstaAprovado(email){
@@ -133,7 +133,6 @@ function SistemaCadastro() {
         buscarParticipantesReprovados,
         obterParticipante,
         obterParticipantes,
-        alterarNotaDoParticipante,
         adicionarNotaAoParticipante,
         obterMediaDasNotasDosParticipantes,
         obterTotalDeParticipantes,
