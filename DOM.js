@@ -21,6 +21,7 @@ function alterarParticipante(email){
 
 function excluirParticipante(email){
 	sistema.removerParticipante(email);
+	alert("Participante excluído com sucesso!");
 	window.location.reload(true);
 }
 
