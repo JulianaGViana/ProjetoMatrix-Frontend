@@ -1,12 +1,12 @@
 function armazenamentoHTTP(){
-
+	
 	obterTodosOsElementos();
 
-	function obterElemento(atributo, elemento){
-		var elementos = obterTodosOsElementos();
-		return elementos.find(function(objeto){
-			return objeto[atributo] === elemento;
-		});
+	function obterElemento(id){
+		return axios.get('http://matrix.avalie.net/api/participantes/'+id)
+			.then(function(res){
+				return res.data;
+			});
 	}
 
 	function obterElementos(atributo, elemento){
@@ -17,57 +17,33 @@ function armazenamentoHTTP(){
 	}
 
 	function obterTodosOsElementos(){
-		var dados = [];
-		$.ajax({
-			type: "GET",
-			url: 'http://matrix.avalie.net/api/participantes/',
-			dataType: "json",
-			async: false,
-			success: function(data){
-				dados = data;
-			}
-		});
-		return dados;
+		return axios.get('http://matrix.avalie.net/api/participantes/')
+			.then(function(res){
+				return res.data;
+			});
 	}
-
+	
 	function adicionar(elemento){
-		var arrayJSON = JSON.stringify(elemento);
-		$.ajax({
-			type: "POST",
-			url: 'http://matrix.avalie.net/api/participantes/',
-			contentType: "application/json",
-			dataType: "json",
-			data: arrayJSON,
-			async: false,
-			success: function() {
-				console.log("Participante adicionado com sucesso!");
-			}
-		});
+		return axios.post('http://matrix.avalie.net/api/participantes/', elemento)
+			.then(function(res){
+				return res.data;
+			}).catch(function(error){
+				throw error.response.data.message;
+			});
 	}
 
-	function editar(atributo, elemento){
-		var arrayJSON = JSON.stringify(elemento);
-		$.ajax({
-			type: "PUT",
-			url: 'http://matrix.avalie.net/api/participantes/'+elemento.id, 
-			contentType: "application/json",
-			dataType: "json", 
-			data: arrayJSON,
-			async: false,
-			success: function(){
-				console.log("Participante editado com sucesso!");
-			}
-		});
+	function editar(elemento){
+		return axios.put('http://matrix.avalie.net/api/participantes/'+elemento.id, elemento)	
+			.then(function(data){
+				console.log(data);
+			});
 	}
 
-	function remover(atributo, elemento){
-		var pessoa = obterElemento(atributo, elemento);
-		$.ajax({
-			type: "DELETE",
-			url: 'http://matrix.avalie.net/api/participantes/'+pessoa.id,
-			dataType: "json",
-			async: true,
-		});
+	function remover(id){
+		return axios.delete('http://matrix.avalie.net/api/participantes/'+id)
+			.then(function(data) {
+				console.log(data);
+			});
 	}
 
 	return {
@@ -76,6 +52,6 @@ function armazenamentoHTTP(){
 		obterTodosOsElementos,
 		adicionar,
 		editar,
-		remover
+		remover,
 	};
 }
